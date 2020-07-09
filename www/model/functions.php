@@ -139,3 +139,55 @@ function is_valid_upload_image($image){
 function h($str) {
   return htmlspecialchars($str, ENT_QUOTES, UTF-8);
 }
+
+
+/**
+* 1次元配列の文字列型の値のみをHTMLエンティティに変換する
+*/
+function entity_array($array) {
+  foreach ($array as $key => $value) {
+    if (is_string($value) === TRUE) {
+      $array[$key] = h($value);
+    } else {
+      $array[$key] = $value;
+    }
+  }
+  return $array;
+}
+
+/**
+* 2次元配列の文字列型の値のみをHTMLエンティティに変換する
+*/
+function entity_double_array($double_array) {
+  foreach ($double_array as $key => $value) {
+    foreach ($value as $keys => $values) {
+      if (is_string($values) === TRUE) {
+        $value[$keys] = h($values);
+      } else {
+        $value[$keys] = $values;
+      }
+    }
+    $double_array[$key] = $value;
+  }
+  return $double_array;
+}
+
+/**
+* 3次元配列の文字列型の値のみをHTMLエンティティに変換する
+*/
+function entity_triple_array($triple_array) {
+  foreach ($triple_array as $key3 => $double_array) { 
+    foreach ($double_array as $key2 => $array) {
+      foreach ($array as $key => $value) {
+          if (is_string($value) === TRUE) {
+            $array[$key] = h($value);
+          } else {
+            $array[$key] = $value;
+          }
+      }
+      $double_array[$key2] = $array;
+    }
+    $triple_array[$key3] = $double_array;
+  }
+  return $triple_array;
+}
