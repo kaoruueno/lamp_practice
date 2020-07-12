@@ -5,6 +5,9 @@ require_once MODEL_PATH . 'db.php';
 // DB利用
 
 function get_item($db, $item_id){
+  $params = [
+    $item_id
+  ];
   $sql = "
     SELECT
       item_id, 
@@ -16,10 +19,10 @@ function get_item($db, $item_id){
     FROM
       items
     WHERE
-      item_id = {$item_id}
+      item_id = ?
   ";
 
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql, $params);
 }
 
 function get_items($db, $is_open = false){
@@ -73,6 +76,13 @@ function regist_item_transaction($db, $name, $price, $stock, $status, $image, $f
 
 function insert_item($db, $name, $price, $stock, $filename, $status){
   $status_value = PERMITTED_ITEM_STATUSES[$status];
+  $params = [
+    $name,
+    $price,
+    $stock,
+    $filename,
+    $status_value
+  ];
   $sql = "
     INSERT INTO
       items(
@@ -82,38 +92,46 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
         image,
         status
       )
-    VALUES('{$name}', {$price}, {$stock}, '{$filename}', {$status_value});
+    VALUES(?, ?, ?, ?, ?);
   ";
 
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, $params);
 }
 
 function update_item_status($db, $item_id, $status){
+  $params = [
+    $status,
+    $item_id
+  ];
   $sql = "
     UPDATE
       items
     SET
-      status = {$status}
+      status = ?
     WHERE
-      item_id = {$item_id}
+      item_id = ?
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, $params);
 }
 
 function update_item_stock($db, $item_id, $stock){
+  $params = [
+    $stock,
+    $item_id
+  ];
   $sql = "
     UPDATE
       items
     SET
-      stock = {$stock}
+      stock = ?
     WHERE
-      item_id = {$item_id}
+      item_id = ?
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, $params);
 }
 
 function destroy_item($db, $item_id){
@@ -132,15 +150,18 @@ function destroy_item($db, $item_id){
 }
 
 function delete_item($db, $item_id){
+  $params = [
+    $item_id
+  ];
   $sql = "
     DELETE FROM
       items
     WHERE
-      item_id = {$item_id}
+      item_id = ?
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, $params);
 }
 
 
