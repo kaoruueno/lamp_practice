@@ -4,6 +4,7 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
 require_once MODEL_PATH . 'cart.php';
+header('X-FRAME-OPTIONS: DENY');
 
 session_start();
 
@@ -18,4 +19,5 @@ $carts = get_user_carts($db, $user['user_id']);
 
 $total_price = sum_carts($carts);
 
+$token = get_csrf_token();
 include_once VIEW_PATH . 'cart_view.php';

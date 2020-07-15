@@ -3,6 +3,7 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
+header('X-FRAME-OPTIONS: DENY');
 
 session_start();
 
@@ -18,18 +19,22 @@ if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
 
-$name = get_post('name');
-$price = get_post('price');
-$status = get_post('status');
-$stock = get_post('stock');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $token = get_post('token');
+  $name = get_post('name');
+  $price = get_post('price');
+  $status = get_post('status');
+  $stock = get_post('stock');
 
-$image = get_file('image');
-
-if(regist_item($db, $name, $price, $stock, $status, $image)){
-  set_message('商品を登録しました。');
-}else {
-  set_error('商品の登録に失敗しました。');
+  $image = get_file('image');
+  
+  if (is_valid_csrf_token($token) === true) {
+    if(regist_item($db, $name, $price, $stock, $status, $image)){
+      set_message('商品を登録しました。');
+    }else {
+      set_error('商品の登録に失敗しました。');
+    }
+  }
 }
-
 
 redirect_to(ADMIN_URL);
