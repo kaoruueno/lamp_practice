@@ -162,3 +162,24 @@ function entity_triple_array($triple_array) {
   }
   return $triple_array;
 }
+
+
+/**
+* CSRF対策で利用する関数
+*/
+/* トークンの生成 */
+function get_csrf_token(){
+  // get_random_string()はユーザー定義関数。
+  $token = get_random_string(30);
+  // set_session()はユーザー定義関数。
+  set_session('token', $token);
+  return $token;
+}
+/* トークンのチェック */
+function is_valid_csrf_token($token){
+  if($token === '') {
+    return false;
+  }
+  // get_session()はユーザー定義関数
+  return $token === get_session('token');
+}

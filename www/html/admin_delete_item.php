@@ -3,6 +3,7 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
+header('X-FRAME-OPTIONS: DENY');
 
 session_start();
 
@@ -18,15 +19,18 @@ if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
 
-$item_id = get_post('item_id');
-
-
-if(destroy_item($db, $item_id) === true){
-  set_message('商品を削除しました。');
-} else {
-  set_error('商品削除に失敗しました。');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $token = get_post('token');
+  $item_id = get_post('item_id');
+  
+  if (is_valid_csrf_token($token) === true) {
+    if(destroy_item($db, $item_id) === true){
+      set_message('商品を削除しました。');
+    } else {
+      set_error('商品削除に失敗しました。');
+    }
+  }
 }
-
 
 
 redirect_to(ADMIN_URL);

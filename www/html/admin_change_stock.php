@@ -3,6 +3,7 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
+header('X-FRAME-OPTIONS: DENY');
 
 session_start();
 
@@ -18,13 +19,18 @@ if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
 
-$item_id = get_post('item_id');
-$stock = get_post('stock');
-
-if(update_item_stock($db, $item_id, $stock)){
-  set_message('在庫数を変更しました。');
-} else {
-  set_error('在庫数の変更に失敗しました。');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $token = get_post('token');
+  $item_id = get_post('item_id');
+  $stock = get_post('stock');
+  
+  if (is_valid_csrf_token($token) === true) {
+    if(update_item_stock($db, $item_id, $stock)){
+      set_message('在庫数を変更しました。');
+    } else {
+      set_error('在庫数の変更に失敗しました。');
+    }
+  }
 }
 
 redirect_to(ADMIN_URL);
