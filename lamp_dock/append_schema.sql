@@ -7,7 +7,7 @@ CREATE TABLE orders (
 
 CREATE TABLE order_details (
   order_id INT(11),
-  cart_id INT(11),
-  item_id INT(11),
-  price INT(11)
+  name VARCHAR(100) COLLATE utf8_general_ci,
+  price INT(11),
+  amount INT(11)
 );
