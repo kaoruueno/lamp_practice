@@ -61,7 +61,7 @@ function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
-  
+  // パスワードをハッシュ化する($password = password_hash();)
   return insert_user($db, $name, $password);
 }
 

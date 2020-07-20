@@ -24,12 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $item_id = get_post('item_id');
   $stock = get_post('stock');
   
-  if (is_valid_csrf_token($token) === true) {
-    if(update_item_stock($db, $item_id, $stock)){
-      set_message('在庫数を変更しました。');
-    } else {
-      set_error('在庫数の変更に失敗しました。');
-    }
+  if (is_valid_csrf_token($token) === false) {
+    redirect_to(ADMIN_URL);
+  }
+  if(update_item_stock($db, $item_id, $stock)){
+    set_message('在庫数を変更しました。');
+  } else {
+    set_error('在庫数の変更に失敗しました。');
   }
 }
 
