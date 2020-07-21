@@ -24,16 +24,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $item_id = get_post('item_id');
   $changes_to = get_post('changes_to');
   
-  if (is_valid_csrf_token($token) === true) {
-    if($changes_to === 'open'){
-      update_item_status($db, $item_id, ITEM_STATUS_OPEN);
-      set_message('ステータスを変更しました。');
-    }else if($changes_to === 'close'){
-      update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
-      set_message('ステータスを変更しました。');
-    }else {
-      set_error('不正なリクエストです。');
-    }
+  if (is_valid_csrf_token($token) === false) {
+    redirect_to(ADMIN_URL);
+  }
+  if($changes_to === 'open'){
+    update_item_status($db, $item_id, ITEM_STATUS_OPEN);
+    set_message('ステータスを変更しました。');
+  }else if($changes_to === 'close'){
+    update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
+    set_message('ステータスを変更しました。');
+  }else {
+    set_error('不正なリクエストです。');
   }
 }
 

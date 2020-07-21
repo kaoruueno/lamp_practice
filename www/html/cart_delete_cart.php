@@ -19,12 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $token = get_post('token');
   $cart_id = get_post('cart_id');
   
-  if (is_valid_csrf_token($token) === true) {
-    if(delete_cart($db, $cart_id)){
-      set_message('カートを削除しました。');
-    } else {
-      set_error('カートの削除に失敗しました。');
-    }
+  if (is_valid_csrf_token($token) === false) {
+    redirect_to(CART_URL);
+  }
+  if(delete_cart($db, $cart_id)){
+    set_message('カートを削除しました。');
+  } else {
+    set_error('カートの削除に失敗しました。');
   }
 }
 

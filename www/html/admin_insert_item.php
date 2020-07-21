@@ -28,12 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $image = get_file('image');
   
-  if (is_valid_csrf_token($token) === true) {
-    if(regist_item($db, $name, $price, $stock, $status, $image)){
-      set_message('商品を登録しました。');
-    }else {
-      set_error('商品の登録に失敗しました。');
-    }
+  if (is_valid_csrf_token($token) === false) {
+    redirect_to(ADMIN_URL);
+  }
+  if(regist_item($db, $name, $price, $stock, $status, $image)){
+    set_message('商品を登録しました。');
+  }else {
+    set_error('商品の登録に失敗しました。');
   }
 }
 

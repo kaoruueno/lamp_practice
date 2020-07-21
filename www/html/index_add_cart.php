@@ -19,12 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $token = get_post('token');
   $item_id = get_post('item_id');
 
-  if (is_valid_csrf_token($token) === true) {
-    if(add_cart($db,$user['user_id'], $item_id)){
-      set_message('カートに商品を追加しました。');
-    } else {
-      set_error('カートの更新に失敗しました。');
-    }
+  if (is_valid_csrf_token($token) === false) {
+    redirect_to(HOME_URL);
+  }
+  if(add_cart($db,$user['user_id'], $item_id)){
+    set_message('カートに商品を追加しました。');
+  } else {
+    set_error('カートの更新に失敗しました。');
   }
 }
 
