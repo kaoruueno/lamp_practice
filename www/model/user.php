@@ -44,7 +44,8 @@ function get_user_by_name($db, $name){
 
 function login_as($db, $name, $password){
   $user = get_user_by_name($db, $name);
-  if($user === false || $user['password'] !== $password){
+  // ログイン情報の照合(入力PWとハッシュ化PWの照合も実装)
+  if($user === false || password_verify($password, $user['password']) === false){
     return false;
   }
   set_session('user_id', $user['user_id']);
@@ -61,7 +62,8 @@ function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
-  // パスワードをハッシュ化する($password = password_hash();)
+  // パスワードのハッシュ化
+  $password = password_hash($password, PASSWORD_DEFAULT);
   return insert_user($db, $name, $password);
 }
 
