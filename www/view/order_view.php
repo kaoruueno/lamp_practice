@@ -35,7 +35,7 @@
             <td><?php print(number_format($order['SUM(price*amount)'])); ?>円</td>
             <td>
               <form method="post" action="order_details.php">
-                <input type="submit" value="表示" class="btn btn-danger delete">
+                <input type="submit" value="表示" class="btn btn-primary">
                 <input type="hidden" name="order_id" value="<?php print $order['order_id']; ?>">
                 <input type="hidden" name="token" value="<?php print $token; ?>">
               </form>
