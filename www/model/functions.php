@@ -187,7 +187,7 @@ function is_valid_csrf_token($token){
 function sum_price($double_array){
   $total_price = 0;
   foreach($double_array as $value){
-    $total_price += $value['price'] * $value['amount'];
+    $total_price += $value['price*amount'];
   }
   return $total_price;
 }

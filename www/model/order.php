@@ -29,7 +29,7 @@ function regist_order_details($db, $order_id, $item_name, $price, $amount) {
 function regist_purchase_carts_transaction($db, $user, $carts) {
     $db->beginTransaction();
     if (purchase_carts($db, $carts) && regist_order($db, $user['user_id'])) {
-        $order_id = $dbh->lastInsertId('order_id');
+        $order_id = $db->lastInsertId('order_id');
         foreach ($carts as $cart) {
             if (regist_order_details($db, $order_id, $cart['name'], $cart['price'], $cart['amount']) === false) {
                 $db->rollback();
@@ -55,10 +55,6 @@ function get_all_orders($db, $user){
       orders
       INNER JOIN order_details
       ON orders.order_id = order_details.order_id
-    GROUP BY 
-      order_id
-    ORDER BY
-      orders.order_id DESC
   ';
   if (is_admin($user) === false) {
     $params[] = $user['user_id'];
@@ -66,13 +62,19 @@ function get_all_orders($db, $user){
       WHERE user_id = ?
     ';    
   }
+  $sql .= '
+    GROUP BY 
+      order_id
+    ORDER BY
+      orders.order_id DESC
+  ';
 
   return fetch_all_query($db, $sql, $params);
 }
 
 
 function get_order_details($db, $user, $order_id){
-  $params = array();
+  $params = [$order_id];
   $sql = '
     SELECT
       name,
@@ -85,7 +87,7 @@ function get_order_details($db, $user, $order_id){
       orders
       INNER JOIN order_details
       ON orders.order_id = order_details.order_id
-    WHERE order_id = ?
+    WHERE order_details.order_id = ?
   ';
   if (is_admin($user) === false) {
     $params[] = $user['user_id'];
@@ -93,33 +95,6 @@ function get_order_details($db, $user, $order_id){
       AND user_id = ?
     ';    
   }
-
   return fetch_all_query($db, $sql, $params);
 }
-
-
-// function get_items($db, $is_open = false){
-//   $sql = '
-//     SELECT
-//       item_id, 
-//       name,
-//       stock,
-//       price,
-//       image,
-//       status
-//     FROM
-//       items
-//   ';
-//   if($is_open === true){
-//     $sql .= '
-//       WHERE status = 1
-//     ';
-//   }
-
-//   return fetch_all_query($db, $sql);
-// }
-
-// function get_all_items($db){
-//   return get_items($db);
-// }
 ?>

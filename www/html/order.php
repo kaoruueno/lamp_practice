@@ -16,7 +16,7 @@ $db = get_db_connect();
 $user = get_login_user($db);
 
 $orders = get_all_orders($db, $user);
-dd($orders);
+// dd($orders);
 
 $token = get_csrf_token();
 include_once VIEW_PATH . '/order_view.php';

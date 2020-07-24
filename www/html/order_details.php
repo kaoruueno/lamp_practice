@@ -23,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     redirect_to(ORDER_URL);
   }
   $order_details = get_order_details($db, $user, $order_id);
-  dd($order_details);
   if ($order_details !== false) { 
     $total_price = sum_price($order_details);
   }
-
+}
 $token = get_csrf_token();
 include_once VIEW_PATH . '/order_details_view.php';
+?>

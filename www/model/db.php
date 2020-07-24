@@ -21,10 +21,10 @@ function fetch_query($db, $sql, $params = array()){
     $statement = $db->prepare($sql);
     $statement->execute($params);
     $data = $statement->fetch();
-    if ($data !== FALSE) {
+    if ($data !== false) {
       return entity_array($data);
     } else {
-      return FALSE;
+      return false;
     }
   }catch(PDOException $e){
     set_error('データ取得に失敗しました。');
