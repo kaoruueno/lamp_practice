@@ -28,19 +28,18 @@ function regist_order_details($db, $order_id, $item_name, $price, $amount) {
 
 function regist_purchase_carts_transaction($db, $user, $carts) {
     $db->beginTransaction();
-    if (purchase_carts($db, $carts) && regist_order($db, $user['user_id'])) {
-        $order_id = $db->lastInsertId('order_id');
-        foreach ($carts as $cart) {
-            if (regist_order_details($db, $order_id, $cart['name'], $cart['price'], $cart['amount']) === false) {
-                $db->rollback();
-                return false;
-            }
-        }
-        $db->commit();
-        return true;
+    purchase_carts($db, $carts);
+    regist_order($db, $user['user_id']);
+    $order_id = $db->lastInsertId('order_id');
+    foreach ($carts as $cart) {
+      regist_order_details($db, $order_id, $cart['name'], $cart['price'], $cart['amount']);
+    }
+    if (count($_SESSION['__errors']) === 0) {
+      $db->commit();
+      return true;
     } else {
-        $db->rollback();
-        return false; 
+      $db->rollback();
+      return false; 
     }
 }
 
