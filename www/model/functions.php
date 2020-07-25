@@ -183,3 +183,11 @@ function is_valid_csrf_token($token){
   // get_session()はユーザー定義関数
   return $token === get_session('token');
 }
+
+function sum_price($double_array){
+  $total_price = 0;
+  foreach($double_array as $value){
+    $total_price += $value['price*amount'];
+  }
+  return $total_price;
+}

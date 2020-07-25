@@ -17,6 +17,11 @@
             <a class="nav-link" href="<?php print(ADMIN_URL);?>">管理</a>
           </li>
         <?php } ?>
+        <?php if(isset($orders) === false){ ?>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php print(ORDER_URL);?>">購入履歴</a>
+          </li>
+        <?php } ?>
       </ul>
     </div>
   </nav>

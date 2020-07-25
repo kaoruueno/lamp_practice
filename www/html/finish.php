@@ -4,6 +4,7 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
 require_once MODEL_PATH . 'cart.php';
+require_once MODEL_PATH . 'order.php';
 header('X-FRAME-OPTIONS: DENY');
 
 session_start();
@@ -31,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   $total_price = sum_carts($carts);
+} else {
+  redirect_to(HOME_URL);
 }
-
-redirect_to(HOME_URL);
 include_once '../view/finish_view.php';
