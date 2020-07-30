@@ -19,9 +19,6 @@ $all_count = get_all_orders_count($db, $user);
 $all_page = (int)ceil($all_count / 8);
 $get_page = get_get('page');
 $current_page = is_valid_get_page($get_page, $all_page);
-var_dump($all_count);
-var_dump($all_page);
-var_dump($current_page);
 $display_count = get_display_count($current_page, $all_page, $all_count);
 
 $orders = get_limit_orders($db, $user, $current_page);
