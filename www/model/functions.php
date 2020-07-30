@@ -191,3 +191,30 @@ function sum_price($double_array){
   }
   return $total_price;
 }
+
+function is_valid_get_page($get_page, $all_page){
+  if (is_positive_integer($get_page) === false) {
+    $get_page = 1;
+  } else {
+    $get_page = (int)$get_page;
+  }
+  if ($get_page > $all_page || $get_page < 1) {
+    $get_page = 1;
+  }
+  return $get_page;
+}
+
+function get_display_count($current_page, $all_page, $all_count) {
+  $display_count = [
+    'min' => ($current_page-1)*8+1,
+    'max' => $current_page*8
+  ];
+  if ($current_page === $all_page) {
+    for ($i = 0; $i <= 6; $i++) {
+      if ($display_count['min']+$i === $all_count) {
+        $display_count['max'] = $display_count['min']+$i;
+      }
+    }
+  }
+  return $display_count;
+}

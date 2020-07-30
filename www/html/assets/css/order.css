@@ -1,0 +1,20 @@
+/* ページネーション用(最大7ページ表示) */
+.pagination {
+  display: flex;
+}
+.pagination p a {
+  display: block;
+  color: #007bff;
+  background-color: white;
+}
+.pagination .current {
+  color: white;
+  background-color: #007bff;
+}
+.pagination p {
+  flex: 1;
+  border: 1px solid #dee2e6;
+  border-collapse: collapse;
+  text-align: center;
+}
+/* ページネーション用(最大7ページ表示) */

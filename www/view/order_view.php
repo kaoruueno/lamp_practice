@@ -17,7 +17,7 @@
 
 
 
-    <?php if(count($orders) > 0){ ?>
+<?php if(count($orders) > 0){ ?>
       <table class="table table-bordered text-center">
         <thead class="thead-light">
           <tr>
@@ -28,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          <?php foreach($orders as $order){ ?>
+  <?php foreach($orders as $order){ ?>
           <tr>
             <td><?php print($order['order_id']); ?></td>
             <td><?php print($order['created']); ?></td>
@@ -41,12 +41,66 @@
               </form>
             </td>
           </tr>
-          <?php } ?>
+  <?php } ?>
         </tbody>
       </table>
-    <?php } else { ?>
+  <?php if ($display_count['min'] < $display_count['max']) { ?><!-- ページネーション(最大7ページ表示) -->
+      <p><?php print $all_count; ?>件中 <?php print $display_count['min']; ?> - <?php print $display_count['max']; ?>件目の商品</p>
+  <?php } else {?>
+      <p><?php print $all_count; ?>件中 <?php print $display_count['min']; ?>件目の商品</p>
+  <?php } ?>
+      <section class="pagination">
+  <?php if ($current_page > 4) { ?>
+        <p><a href="?page=1">最初へ</a></p>
+  <?php } ?>
+  <?php if ($current_page > 1) { ?>
+        <p><a href="?page=<?php print $current_page-1 ;?>">前へ</a></p>
+  <?php } ?>
+  <?php if ($current_page >= 4 && $current_page <= $all_page - 3) { ?>
+    <?php for ($i = -3; $i <= 3; $i++) { ?>
+      <?php if ($i !== 0) { ?>
+        <p><a href="?page=<?php print $current_page+$i; ?>"><?php print $current_page+$i; ?></a></p>
+      <?php } else { ?>
+        <p class="current"><?php print $current_page; ?></p>
+      <?php } ?>
+    <?php } ?>
+  <?php } else if ($current_page < 4) { ?>
+    <?php for ($i = -3; $i <= 0; $i++) { ?>
+      <?php if ($i === 0) { ?>
+        <p class="current"><?php print $current_page; ?></p>
+      <?php } else if ($current_page+$i > 0) { ?>
+        <p><a href="?page=<?php print $current_page+$i; ?>"><?php print $current_page+$i; ?></a></p>
+      <?php } ?>
+    <?php } ?>
+    <?php for ($i = 1; $i <= 7-$current_page; $i++) { ?>
+      <?php if ($current_page+$i <= $all_page) { ?>
+        <p><a href="?page=<?php print $current_page+$i; ?>"><?php print $current_page+$i; ?></a></p>
+      <?php } ?>
+    <?php } ?>
+  <?php } else { ?>
+    <?php for ($i = -6-$current_page+$all_page; $i <= 0; $i++) { ?>
+      <?php if ($i === 0) { ?>
+        <p class="current"><?php print $current_page; ?></p>
+      <?php } else if ($current_page+$i > 0) { ?>
+        <p><a href="?page=<?php print $current_page+$i; ?>"><?php print $current_page+$i; ?></a></p>
+      <?php } ?>
+    <?php } ?>
+    <?php for ($i = 1; $i <= 3; $i++) { ?>
+      <?php if ($current_page+$i <= $all_page) { ?>
+        <p><a href="?page=<?php print $current_page+$i; ?>"><?php print $current_page+$i; ?></a></p>
+      <?php } ?>
+    <?php } ?>
+  <?php } ?>
+  <?php if ($current_page < $all_page) { ?>
+        <p><a href="?page=<?php print $current_page+1; ?>">次へ</a></p>
+  <?php } ?>
+  <?php if ($all_page - $current_page > 3) { ?>
+        <p><a href="?page=<?php print $all_page; ?>">最後へ</a></p>
+  <?php } ?>
+      </section><!-- ページネーション終了 -->
+<?php } else { ?>
       <p>購入履歴はありません。</p>
-    <?php } ?> 
+<?php } ?> 
   </div>
 </body>
 </html>
